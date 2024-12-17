@@ -1,56 +1,40 @@
-import 'package:calculator/utils/utils_math.dart';
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:function_tree/function_tree.dart';
 
-class CalculatorController extends ValueNotifier<String> {
-  CalculatorController._(super._value);
-  static final instance = CalculatorController._('1000');
-
-  final math = UtilsMath.instance;
+class ExpressionController extends ValueNotifier<String> {
+  ExpressionController._(super._value);
+  static final instance = ExpressionController._('');
 
   ValueNotifier result = ValueNotifier<String>('');
-  final List<Map<String, dynamic>> _groups = <Map<String, dynamic>>[];
-  int _groupIndex = 0;
-  String getValue() => value;
-  String getResult() => result.value;
 
-  calculate() {
+  void calculate() {
     try {
-      for (var i = 0; i < _groups.length; i++) {
-        final String exp = _groups[i]['exp'];
-        _groups[i]['result'] = exp.interpret().toStringAsFixed(1);
-      }
+      result.value = value.interpret().toStringAsFixed(1);
     } catch (e) {
-      throw Exception(e);
-    } finally {
-      result.value = _groups.last['result'];
+      throw Exception(e.toString());
     }
   }
 
   void updatePartial() {
-    _groupIndex = 0;
-    _groups.clear();
-    if (!value.contains('(') && !value.contains(')')) {
-      saveGroup(value);
-      try {
-        calculate();
-      } on Exception {
-        rethrow;
-      }
-    } else {
-      try {
-        orderSentenceGroups(value);
-      } on Exception {
-        rethrow;
-      } finally {
-        try {
-          calculate();
-        } on Exception {
-          rethrow;
-        }
-      }
+    try {
+      calculate();
+    } on Exception catch (e) {
+      log(e.toString());
     }
   }
+
+  void setResult() => value = result.value;
+
+  void clearExpression() => value = '';
+
+  void clearAll() {
+    value = '';
+    result.value = '';
+  }
+
+  /*The methods bellow are the way I created to do the calculation
 
   bool isAllGroupsClosed() {
     int open = 0, close = 0;
@@ -89,4 +73,5 @@ class CalculatorController extends ValueNotifier<String> {
     _groups.add({'group': _groupIndex, 'exp': exp, 'result': 0.0});
     _groupIndex++;
   }
+  */
 }

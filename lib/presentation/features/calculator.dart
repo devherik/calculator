@@ -1,4 +1,4 @@
-import 'package:calculator/presentation/controllers/calculator_controller.dart';
+import 'package:calculator/presentation/controllers/expression_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:calculator/utils/globals.dart' as global;
@@ -12,7 +12,7 @@ class Calculator extends StatefulWidget {
 
 class _CalculatorState extends State<Calculator>
     with SingleTickerProviderStateMixin {
-  late CalculatorController _calculatorController;
+  late ExpressionController _calculatorController;
   late AnimationController _animationController;
 
   late Animation<double> pressController;
@@ -21,14 +21,20 @@ class _CalculatorState extends State<Calculator>
   @override
   void initState() {
     super.initState();
-    _calculatorController = CalculatorController.instance;
-    _calculatorController.result.addListener(() => setState(() {}));
+    _calculatorController = ExpressionController.instance;
+
     _animationController =
         AnimationController(vsync: this, duration: const Duration(seconds: 1))
           ..stop();
     pressController = CurvedAnimation(
         parent: _animationController, curve: Curves.bounceInOut);
     resultController = TextEditingController();
+
+    _calculatorController.result.addListener(() => setState(() {}));
+    resultController.addListener(() {
+      _calculatorController.value = resultController.text;
+      _calculatorController.updatePartial();
+    });
   }
 
   @override
@@ -39,47 +45,69 @@ class _CalculatorState extends State<Calculator>
             flex: 2,
             child: Container(color: global.blue, child: resultFormField())),
         Flexible(
-            child: Container(
-          color: global.red,
-          child: Row(
-            children: <Widget>[
-              numberButton(1),
-              numberButton(2),
-              numberButton(3),
-              symbolButton('+')
-            ],
-          ),
+            child: Row(
+          children: <Widget>[
+            numberButton(1),
+            numberButton(2),
+            numberButton(3),
+            symbolButton('+')
+          ],
+        )),
+        Flexible(
+            child: Row(
+          children: <Widget>[
+            numberButton(1),
+            numberButton(2),
+            numberButton(3),
+            symbolButton('+')
+          ],
+        )),
+        Flexible(
+            child: Row(
+          children: <Widget>[
+            numberButton(1),
+            numberButton(2),
+            numberButton(3),
+            symbolButton('+')
+          ],
+        )),
+        Flexible(
+            child: Row(
+          children: <Widget>[
+            numberButton(1),
+            numberButton(2),
+            numberButton(3),
+            symbolButton('+')
+          ],
         ))
       ],
     );
   }
 
   Widget resultFormField() {
-    return SizedBox(
+    return Container(
+      padding: const EdgeInsets.all(8),
       width: MediaQuery.of(context).size.width,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          SelectableText(
-            _calculatorController.value,
-            style: TextStyle(
-              fontSize: _calculatorController.value.length < 8 ? 32 : 26,
-              color: Theme.of(context).colorScheme.inversePrimary,
-              letterSpacing: 2,
-            ),
+      child: TextField(
+        controller: resultController,
+        keyboardType:
+            const TextInputType.numberWithOptions(decimal: true, signed: true),
+        enabled: true,
+        maxLength: 24,
+        textAlign: TextAlign.end,
+        decoration: InputDecoration(
+          helper: ValueListenableBuilder(
+            valueListenable: _calculatorController.result,
+            builder: (context, value, child) {
+              return Text(value);
+            },
           ),
-          global.verySmallBoxSpace,
-          SelectableText(
-            _calculatorController.value,
-            style: TextStyle(
-              fontSize: 16,
-              color:
-                  Theme.of(context).colorScheme.inversePrimary.withOpacity(.5),
-              letterSpacing: 2,
-            ),
-          ),
-        ],
+          border: UnderlineInputBorder(),
+          disabledBorder: UnderlineInputBorder(),
+          enabledBorder: UnderlineInputBorder(),
+          focusedBorder: UnderlineInputBorder(),
+          errorBorder: UnderlineInputBorder(),
+        ),
       ),
     );
   }
@@ -90,8 +118,12 @@ class _CalculatorState extends State<Calculator>
         return MaterialButton(
           shape: const CircleBorder(eccentricity: 0),
           color: Theme.of(context).colorScheme.secondary,
-          child: Text(number.toString(),
-              style: Theme.of(context).textTheme.labelMedium),
+          child: AnimatedSize(
+            duration: const Duration(microseconds: 200),
+            curve: Curves.bounceInOut,
+            child: Text(number.toString(),
+                style: Theme.of(context).textTheme.labelMedium),
+          ),
           onPressed: () {},
         );
       },

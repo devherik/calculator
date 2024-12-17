@@ -33,7 +33,7 @@ class _CalculatorState extends State<Calculator>
     _calculatorController.result.addListener(() => setState(() {}));
     resultController.addListener(() {
       _calculatorController.value = resultController.text;
-      _calculatorController.updatePartial();
+      _calculatorController.updatePartialResult();
     });
   }
 

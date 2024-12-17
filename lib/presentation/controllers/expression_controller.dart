@@ -17,7 +17,7 @@ class ExpressionController extends ValueNotifier<String> {
     }
   }
 
-  void updatePartial() {
+  void updatePartialResult() {
     try {
       calculate();
     } on Exception catch (e) {

@@ -15,6 +15,7 @@ class _HomePageState extends State<HomePage> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
+        color: Colors.black87,
         padding: const EdgeInsets.all(8),
         child: const SafeArea(
           child: Calculator(),

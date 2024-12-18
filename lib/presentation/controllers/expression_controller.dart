@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:calculator/data/sources/local/localstorage_api_imp.dart';
+import 'package:calculator/infra/port/output/localstorage_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:function_tree/function_tree.dart';
 
@@ -8,6 +10,7 @@ class ExpressionController extends ValueNotifier<String> {
   static final instance = ExpressionController._('');
 
   ValueNotifier result = ValueNotifier<String>('');
+  final LocalstorageApi localstorage = LocalstorageApiImp.instance;
 
   void calculate() {
     try {
@@ -25,7 +28,14 @@ class ExpressionController extends ValueNotifier<String> {
     }
   }
 
-  void setResult() => value = result.value;
+  void setResult() {
+    value = result.value;
+    try {
+      localstorage.saveAnExpression('$value = $result');
+    } on Exception catch (e) {
+      throw Exception(e.toString());
+    }
+  }
 
   void clearExpression() => value = '';
 

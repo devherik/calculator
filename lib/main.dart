@@ -1,12 +1,15 @@
 import 'package:calculator/config/router/router.dart';
 import 'package:calculator/config/theme/theme.dart';
+import 'package:calculator/presentation/controllers/main_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  final MainController mainController = MainController.instance;
+  await mainController.init();
   runApp(const MyApp());
 }
 

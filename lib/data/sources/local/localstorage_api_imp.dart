@@ -9,7 +9,7 @@ class LocalstorageApiImp implements LocalstorageApi {
   int expressionsIndex = 0;
 
   @override
-  void initApi() async {
+  Future<void> initApi() async {
     await initLocalStorage().whenComplete(() {
       expressionsIndex = int.parse(localStorage.getItem('INDEX') ?? '0');
       expressionsIndex > 0 ? getLocalExpressions() : null;
@@ -31,7 +31,7 @@ class LocalstorageApiImp implements LocalstorageApi {
   @override
   void getLocalExpressions() {
     try {
-      for (var i = 0; i <= expressionsIndex; i++) {
+      for (var i = 1; i <= expressionsIndex; i++) {
         expressions.add(localStorage.getItem('EXP_$expressionsIndex')!);
       }
     } catch (e) {

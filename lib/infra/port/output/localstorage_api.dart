@@ -1,6 +1,6 @@
 abstract class LocalstorageApi<T> {
-  void initApi();
-  void getLocalExpressions();
-  void eraseLocalExpressions();
-  void saveAnExpression(T exp);
+  initApi();
+  getLocalExpressions();
+  eraseLocalExpressions();
+  saveAnExpression(T exp);
 }

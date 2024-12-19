@@ -30,6 +30,7 @@ class ExpressionController extends ValueNotifier<String> {
 
   void setResult() {
     value = result.value;
+    result.value = '';
     try {
       localstorage.saveAnExpression('$value = $result');
     } on Exception catch (e) {

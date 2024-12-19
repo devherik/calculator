@@ -16,7 +16,6 @@ class _CalculatorState extends State<Calculator>
   late AnimationController _animationController;
 
   late Animation<double> pressController;
-  late TextEditingController resultController;
 
   @override
   void initState() {
@@ -28,23 +27,20 @@ class _CalculatorState extends State<Calculator>
           ..stop();
     pressController = CurvedAnimation(
         parent: _animationController, curve: Curves.bounceInOut);
-    resultController = TextEditingController();
 
     _expressionController.result.addListener(() => setState(() {}));
-    _expressionController.addListener(() => setState(() {}));
-    resultController.addListener(() {
-      _expressionController.value = resultController.text;
-      _expressionController.updatePartialResult();
-    });
+    _expressionController.addListener(() => setState(() {
+          _expressionController.updatePartialResult();
+        }));
   }
 
   @override
   Widget build(BuildContext context) {
     final gridLayout = <Widget>[
       clearButton(),
-      symbolButton('+/-'),
-      symbolButton('%'),
-      symbolButton('/'),
+      symbolButton('('),
+      symbolButton(')'),
+      symbolButton('÷'),
       numberButton(7),
       numberButton(8),
       numberButton(9),
@@ -59,7 +55,7 @@ class _CalculatorState extends State<Calculator>
       symbolButton('+'),
       symbolButton('.'),
       numberButton(0),
-      emptyButton(),
+      symbolButton('%'),
       symbolButton('='),
     ];
     return Column(
@@ -99,8 +95,11 @@ class _CalculatorState extends State<Calculator>
           //TODO: add transitions animations
           Text(_expressionController.value,
               style: Theme.of(context).textTheme.titleSmall),
-          Text(_expressionController.result.value,
-              style: Theme.of(context).textTheme.titleMedium),
+          ValueListenableBuilder(
+            valueListenable: _expressionController.result,
+            builder: (context, value, child) =>
+                Text(value, style: Theme.of(context).textTheme.titleMedium),
+          ),
         ],
       ),
     );
@@ -111,7 +110,8 @@ class _CalculatorState extends State<Calculator>
       builder: (context) {
         return MaterialButton(
             shape: const CircleBorder(eccentricity: 0),
-            color: Theme.of(context).colorScheme.secondary,
+            color: Theme.of(context).colorScheme.primary,
+            elevation: 0,
             child: AnimatedSize(
                 duration: const Duration(microseconds: 200),
                 curve: Curves.bounceInOut,
@@ -129,12 +129,26 @@ class _CalculatorState extends State<Calculator>
       builder: (context) {
         return MaterialButton(
             shape: const CircleBorder(eccentricity: 0),
-            color: Theme.of(context).colorScheme.secondary,
+            color: symbol == '='
+                ? global.green
+                : Theme.of(context).colorScheme.secondary,
+            elevation: 0.5,
             child: Text(
               symbol,
               style: const TextStyle(color: Colors.black),
             ),
-            onPressed: () => _expressionController.value += symbol);
+            onPressed: () {
+              switch (symbol) {
+                case 'x':
+                  symbol = '*';
+                case '÷':
+                  symbol = '/';
+                default:
+              }
+              symbol == '='
+                  ? _expressionController.setResult()
+                  : _expressionController.value += symbol;
+            });
       },
     );
   }
@@ -143,14 +157,20 @@ class _CalculatorState extends State<Calculator>
     return Builder(
       builder: (context) {
         return MaterialButton(
-          shape: const CircleBorder(eccentricity: 0),
-          color: global.green,
-          child: const Text(
-            'C',
-            style: TextStyle(color: Colors.black),
-          ),
-          onPressed: () => _expressionController.clearAll,
-        );
+            shape: const CircleBorder(eccentricity: 0),
+            elevation: 0.5,
+            color: global.red,
+            child: const Text(
+              'C',
+              style: TextStyle(color: Colors.black),
+            ),
+            onLongPress: () => _expressionController.clearAll(),
+            onPressed: () {
+              _expressionController.value.isNotEmpty
+                  ? _expressionController.value = _expressionController.value
+                      .substring(0, _expressionController.value.length - 1)
+                  : null;
+            });
       },
     );
   }

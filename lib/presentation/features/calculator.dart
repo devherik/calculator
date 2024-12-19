@@ -53,9 +53,9 @@ class _CalculatorState extends State<Calculator>
       numberButton(2),
       numberButton(3),
       symbolButton('+'),
-      symbolButton('.'),
       numberButton(0),
-      symbolButton('%'),
+      symbolButton('.'),
+      const SizedBox(),
       symbolButton('='),
     ];
     return Column(
@@ -125,13 +125,20 @@ class _CalculatorState extends State<Calculator>
   }
 
   Widget symbolButton(String symbol) {
+    Color color;
+    switch (symbol) {
+      case '.':
+        color = Theme.of(context).colorScheme.primary;
+      case '=':
+        color = global.green;
+      default:
+        color = Theme.of(context).colorScheme.secondary;
+    }
     return Builder(
       builder: (context) {
         return MaterialButton(
             shape: const CircleBorder(eccentricity: 0),
-            color: symbol == '='
-                ? global.green
-                : Theme.of(context).colorScheme.secondary,
+            color: color,
             elevation: 0.5,
             child: Text(
               symbol,

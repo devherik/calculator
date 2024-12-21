@@ -44,91 +44,96 @@ class _ProductPricePageState extends State<ProductPricePage> {
       _feedList.add(feedsotckFields(_countFeedstock$.value));
     }
     return Scaffold(
+      backgroundColor: Colors.black45,
       appBar: AppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Expanded(flex: 1, child: resultFutureField()),
-            globals.verySmallBoxSpace,
-            Expanded(
-              flex: 3,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Expanded(flex: 1, child: resultFutureField()),
+          globals.verySmallBoxSpace,
+          Expanded(
+            flex: 3,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(24),
+                    topRight: Radius.circular(24)),
+              ),
+              padding: const EdgeInsets.only(top: 32),
               child: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    Card(
-                      shadowColor: Theme.of(context).colorScheme.tertiary,
-                      borderOnForeground: false,
-                      color: Theme.of(context).colorScheme.secondary,
-                      elevation: 2,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 16, horizontal: 8),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text('Materiais utilizados',
-                                    style:
-                                        Theme.of(context).textTheme.titleSmall),
-                                IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.help,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .inversePrimary,
-                                    ))
-                              ],
-                            ),
-                            globals.smallBoxSpace,
-                            feedstockAmountControl(),
-                            globals.smallBoxSpace,
-                            ListView.builder(
-                              physics: const ScrollPhysics(
-                                  parent: NeverScrollableScrollPhysics()),
-                              shrinkWrap: true,
-                              itemCount: _feedList.length,
-                              itemBuilder: (context, index) => _feedList[index],
-                            ),
-                          ],
-                        ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: <Widget>[
+                      Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text('Materiais utilizados',
+                                  style:
+                                      Theme.of(context).textTheme.labelLarge),
+                              IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(
+                                    Icons.help_outline_outlined,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .inversePrimary,
+                                  ))
+                            ],
+                          ),
+                          globals.verySmallBoxSpace,
+                          feedstockAmountControl(),
+                          globals.smallBoxSpace,
+                          ListView.builder(
+                            physics: const ScrollPhysics(
+                                parent: NeverScrollableScrollPhysics()),
+                            shrinkWrap: true,
+                            itemCount: _feedList.length,
+                            itemBuilder: (context, index) => _feedList[index],
+                          ),
+                        ],
                       ),
-                    ),
-                    globals.smallBoxSpace,
-                    UtilsWidgets().formFieldPrefix(
-                        context,
-                        _additionalCostsTextController,
-                        'Custos adicionais',
-                        'R\$ '),
-                    globals.smallBoxSpace,
-                    UtilsWidgets().formFieldSufix(
-                        context, _feesTextController, 'Taxas e impostos', ' %'),
-                    globals.smallBoxSpace,
-                    UtilsWidgets().formFieldSufix(
-                        context, _profitTextcontroller, 'Lucro desejado', ' %'),
-                    globals.smallBoxSpace,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [clearButton(), shareButton()],
-                    ),
-                  ],
+                      globals.verySmallBoxSpace,
+                      Divider(
+                        color: Theme.of(context).colorScheme.tertiary,
+                        thickness: 1,
+                      ),
+                      globals.verySmallBoxSpace,
+                      UtilsWidgets().formFieldPrefix(
+                          context,
+                          _additionalCostsTextController,
+                          'Custos adicionais',
+                          'R\$ '),
+                      globals.smallBoxSpace,
+                      UtilsWidgets().formFieldSufix(context,
+                          _feesTextController, 'Taxas e impostos', ' %'),
+                      globals.smallBoxSpace,
+                      UtilsWidgets().formFieldSufix(context,
+                          _profitTextcontroller, 'Lucro desejado', ' %'),
+                      globals.smallBoxSpace,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [clearButton(), shareButton()],
+                      ),
+                      globals.smallBoxSpace
+                    ],
+                  ),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
   Widget resultFutureField() {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width * .5,
+    return Flexible(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -141,7 +146,7 @@ class _ProductPricePageState extends State<ProductPricePage> {
                 'R\$',
                 style: TextStyle(
                   fontSize: 36,
-                  color: Theme.of(context).colorScheme.tertiary,
+                  color: Theme.of(context).colorScheme.inversePrimary,
                   letterSpacing: 2,
                 ),
               ),
@@ -149,15 +154,18 @@ class _ProductPricePageState extends State<ProductPricePage> {
                 ' ${_controller.value}',
                 style: TextStyle(
                   fontSize: 36,
-                  color: Theme.of(context).colorScheme.inversePrimary,
+                  color: Theme.of(context).colorScheme.tertiary,
                   letterSpacing: 2,
                 ),
               ),
             ],
           ),
           globals.verySmallBoxSpace,
-          Divider(
-            color: Theme.of(context).colorScheme.tertiary,
+          SizedBox(
+            width: MediaQuery.of(context).size.width * .5,
+            child: Divider(
+              color: Theme.of(context).colorScheme.tertiary,
+            ),
           ),
         ],
       ),
@@ -183,13 +191,15 @@ class _ProductPricePageState extends State<ProductPricePage> {
                 },
                 icon: Icon(
                   Icons.arrow_back,
-                  color: Theme.of(context).colorScheme.inversePrimary,
+                  color: _countFeedstock$.value > 1
+                      ? Theme.of(context).colorScheme.inversePrimary
+                      : Theme.of(context).colorScheme.secondary,
                 )),
             ValueListenableBuilder(
               valueListenable: _countFeedstock$,
               builder: (context, value, child) => Text(
                 (value).toString(),
-                style: Theme.of(context).textTheme.titleMedium,
+                style: Theme.of(context).textTheme.titleSmall,
               ),
             ),
             IconButton(
@@ -201,7 +211,9 @@ class _ProductPricePageState extends State<ProductPricePage> {
                 },
                 icon: Icon(
                   Icons.arrow_forward,
-                  color: Theme.of(context).colorScheme.inversePrimary,
+                  color: _countFeedstock$.value < 5
+                      ? Theme.of(context).colorScheme.inversePrimary
+                      : Theme.of(context).colorScheme.secondary,
                 )),
           ],
         ),
@@ -224,10 +236,9 @@ class _ProductPricePageState extends State<ProductPricePage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          flex: 2,
+        Flexible(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(4.0),
             child: TextFormField(
               controller: valueTextController,
               maxLines: 1,
@@ -235,28 +246,28 @@ class _ProductPricePageState extends State<ProductPricePage> {
               textInputAction: TextInputAction.next,
               textAlign: TextAlign.start,
               style: Theme.of(context).textTheme.bodyLarge,
-              cursorColor: Theme.of(context).colorScheme.inversePrimary,
+              showCursor: false,
               decoration: InputDecoration(
                   filled: true,
                   fillColor: Theme.of(context).colorScheme.secondary,
                   contentPadding:
-                      const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-                  labelText: 'Preço',
-                  labelStyle: Theme.of(context).textTheme.bodyMedium,
+                      const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+                  hintText: 'Valor',
+                  hintStyle: Theme.of(context).textTheme.labelMedium,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide(
                       color: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide(
                       color: Theme.of(context).colorScheme.inversePrimary,
                     ),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide(
                       color: Theme.of(context).colorScheme.secondary,
                     ),
@@ -267,10 +278,9 @@ class _ProductPricePageState extends State<ProductPricePage> {
             ),
           ),
         ),
-        Expanded(
-          flex: 2,
+        Flexible(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(4.0),
             child: TextFormField(
               controller: amountTextController,
               maxLines: 1,
@@ -278,28 +288,28 @@ class _ProductPricePageState extends State<ProductPricePage> {
               textInputAction: TextInputAction.next,
               textAlign: TextAlign.start,
               style: Theme.of(context).textTheme.bodyLarge,
-              cursorColor: Theme.of(context).colorScheme.inversePrimary,
+              showCursor: false,
               decoration: InputDecoration(
                   filled: true,
                   fillColor: Theme.of(context).colorScheme.secondary,
                   contentPadding:
-                      const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-                  labelText: 'Quantidade',
-                  labelStyle: Theme.of(context).textTheme.bodyMedium,
+                      const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+                  hintText: '    Quantidade',
+                  hintStyle: Theme.of(context).textTheme.bodyMedium,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide(
                       color: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide(
                       color: Theme.of(context).colorScheme.inversePrimary,
                     ),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide(
                       color: Theme.of(context).colorScheme.secondary,
                     ),
@@ -315,9 +325,9 @@ class _ProductPricePageState extends State<ProductPricePage> {
   Widget clearButton() {
     return MaterialButton(
       padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 32),
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      splashColor: Theme.of(context).colorScheme.secondary,
+      elevation: 1,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      splashColor: Theme.of(context).colorScheme.inversePrimary,
       onPressed: () {
         _additionalCostsTextController.clear();
         _feesTextController.clear();
@@ -339,9 +349,10 @@ class _ProductPricePageState extends State<ProductPricePage> {
   Widget shareButton() {
     return MaterialButton(
       padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 32),
-      elevation: 2,
+      elevation: 1,
       color: Theme.of(context).colorScheme.tertiary,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      splashColor: Theme.of(context).colorScheme.inversePrimary,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: Text(
         'Compartilhar',
         style: Theme.of(context).textTheme.bodyLarge,

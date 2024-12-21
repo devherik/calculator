@@ -35,19 +35,19 @@ class UtilsWidgets {
           labelText: label,
           labelStyle: Theme.of(context).textTheme.bodyMedium,
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide(
               color: Theme.of(context).colorScheme.secondary,
             ),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide(
               color: Theme.of(context).colorScheme.inversePrimary,
             ),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide(
               color: Theme.of(context).colorScheme.secondary,
             ),
@@ -76,19 +76,19 @@ class UtilsWidgets {
           labelText: label,
           labelStyle: Theme.of(context).textTheme.bodyMedium,
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide(
               color: Theme.of(context).colorScheme.secondary,
             ),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide(
               color: Theme.of(context).colorScheme.inversePrimary,
             ),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide(
               color: Theme.of(context).colorScheme.secondary,
             ),

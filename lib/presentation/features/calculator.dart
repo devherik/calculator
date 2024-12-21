@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:calculator/presentation/controllers/expression_controller.dart';
 import 'package:flutter/material.dart';
 
@@ -67,8 +68,8 @@ class _CalculatorState extends State<Calculator>
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            iconButton(const Icon(Iconsax.timer)),
-            iconButton(const Icon(Iconsax.coin))
+            iconButton(const Icon(Iconsax.timer), '/home/history'),
+            iconButton(const Icon(Iconsax.coin), '/home/product')
           ],
         ),
         Expanded(
@@ -206,9 +207,10 @@ class _CalculatorState extends State<Calculator>
     );
   }
 
-  Widget iconButton(Icon icon) {
+  Widget iconButton(Icon icon, String route) {
     return Builder(
-      builder: (context) => IconButton(onPressed: () {}, icon: icon),
+      builder: (context) =>
+          IconButton(onPressed: () => context.go(route), icon: icon),
     );
   }
 

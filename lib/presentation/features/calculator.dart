@@ -2,6 +2,7 @@ import 'package:calculator/presentation/controllers/expression_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:calculator/utils/globals.dart' as global;
+import 'package:iconsax/iconsax.dart';
 
 class Calculator extends StatefulWidget {
   const Calculator({super.key});
@@ -28,9 +29,10 @@ class _CalculatorState extends State<Calculator>
     pressController = CurvedAnimation(
         parent: _animationController, curve: Curves.bounceInOut);
 
-    _expressionController.result.addListener(() => setState(() {}));
     _expressionController.addListener(() => setState(() {
-          _expressionController.updatePartialResult();
+          _expressionController.value.length < 18
+              ? _expressionController.updatePartialResult()
+              : null;
         }));
   }
 
@@ -60,9 +62,17 @@ class _CalculatorState extends State<Calculator>
     ];
     return Column(
       children: <Widget>[
-        Expanded(flex: 2, child: Container(child: resultFormField())),
+        Flexible(child: Container(child: resultFormField())),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            iconButton(const Icon(Iconsax.timer)),
+            iconButton(const Icon(Iconsax.coin))
+          ],
+        ),
         Expanded(
-          flex: 5,
+          flex: 2,
           child: Container(
             padding: const EdgeInsets.only(top: 32, left: 8, right: 8),
             decoration: BoxDecoration(
@@ -72,6 +82,7 @@ class _CalculatorState extends State<Calculator>
             ),
             child: Center(
               child: GridView.count(
+                physics: const NeverScrollableScrollPhysics(),
                 crossAxisCount: 4,
                 mainAxisSpacing: 20,
                 crossAxisSpacing: 20,
@@ -117,18 +128,25 @@ class _CalculatorState extends State<Calculator>
                 curve: Curves.bounceInOut,
                 child: Text(
                   number.toString(),
-                  style: const TextStyle(color: Colors.black),
+                  style: const TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24),
                 )),
-            onPressed: () => _expressionController.value += number.toString());
+            onPressed: () => _expressionController.value.length < 18
+                ? _expressionController.value += number.toString()
+                : null);
       },
     );
   }
 
   Widget symbolButton(String symbol) {
     Color color;
+    double elevation = 0.5;
     switch (symbol) {
       case '.':
         color = Theme.of(context).colorScheme.primary;
+        elevation = 0;
       case '=':
         color = global.green;
       default:
@@ -139,10 +157,13 @@ class _CalculatorState extends State<Calculator>
         return MaterialButton(
             shape: const CircleBorder(eccentricity: 0),
             color: color,
-            elevation: 0.5,
+            elevation: elevation,
             child: Text(
               symbol,
-              style: const TextStyle(color: Colors.black),
+              style: const TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24),
             ),
             onPressed: () {
               switch (symbol) {
@@ -169,7 +190,10 @@ class _CalculatorState extends State<Calculator>
             color: global.red,
             child: const Text(
               'C',
-              style: TextStyle(color: Colors.black),
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24),
             ),
             onLongPress: () => _expressionController.clearAll(),
             onPressed: () {
@@ -182,20 +206,9 @@ class _CalculatorState extends State<Calculator>
     );
   }
 
-  Widget emptyButton() {
+  Widget iconButton(Icon icon) {
     return Builder(
-      builder: (context) {
-        return MaterialButton(
-          shape: const CircleBorder(eccentricity: 0),
-          color: Theme.of(context).colorScheme.primary,
-          elevation: 0,
-          child: const Text(
-            '',
-            style: TextStyle(color: Colors.black),
-          ),
-          onPressed: () {},
-        );
-      },
+      builder: (context) => IconButton(onPressed: () {}, icon: icon),
     );
   }
 

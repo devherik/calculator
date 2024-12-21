@@ -44,7 +44,7 @@ class _ProductPricePageState extends State<ProductPricePage> {
       _feedList.add(feedsotckFields(_countFeedstock$.value));
     }
     return Scaffold(
-      backgroundColor: Colors.black45,
+      backgroundColor: Colors.black87,
       appBar: AppBar(),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -64,7 +64,7 @@ class _ProductPricePageState extends State<ProductPricePage> {
               padding: const EdgeInsets.only(top: 32),
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(16),
                   child: Column(
                     children: <Widget>[
                       Column(
@@ -116,10 +116,7 @@ class _ProductPricePageState extends State<ProductPricePage> {
                       UtilsWidgets().formFieldSufix(context,
                           _profitTextcontroller, 'Lucro desejado', ' %'),
                       globals.smallBoxSpace,
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [clearButton(), shareButton()],
-                      ),
+                      clearButton(),
                       globals.smallBoxSpace
                     ],
                   ),

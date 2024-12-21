@@ -3,6 +3,7 @@ import 'package:calculator/presentation/controllers/expression_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:calculator/utils/globals.dart' as global;
+import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 
 class Calculator extends StatefulWidget {
@@ -63,19 +64,22 @@ class _CalculatorState extends State<Calculator>
     ];
     return Column(
       children: <Widget>[
-        Flexible(child: Container(child: resultFormField())),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            iconButton(const Icon(Iconsax.timer), '/home/history'),
-            iconButton(const Icon(Iconsax.coin), '/home/product')
-          ],
+        Flexible(child: resultFormField()),
+        Padding(
+          padding: const EdgeInsets.all(4),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              iconButton(const Icon(Iconsax.timer), '/home/history'),
+              iconButton(const Icon(Iconsax.coin), '/home/product')
+            ],
+          ),
         ),
         Expanded(
           flex: 2,
           child: Container(
-            padding: const EdgeInsets.only(top: 32, left: 8, right: 8),
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.primary,
               borderRadius: const BorderRadius.only(
@@ -106,11 +110,17 @@ class _CalculatorState extends State<Calculator>
         children: <Widget>[
           //TODO: add transitions animations
           Text(_expressionController.value,
-              style: Theme.of(context).textTheme.titleSmall),
+              style: GoogleFonts.ubuntu(
+                  fontSize: 24,
+                  letterSpacing: 1.5,
+                  color: global.primaryLightColor)),
           ValueListenableBuilder(
             valueListenable: _expressionController.result,
-            builder: (context, value, child) =>
-                Text(value, style: Theme.of(context).textTheme.titleMedium),
+            builder: (context, value, child) => Text(value,
+                style: GoogleFonts.ubuntu(
+                    fontSize: 48,
+                    letterSpacing: 1.5,
+                    color: global.terciaryLightColor)),
           ),
         ],
       ),

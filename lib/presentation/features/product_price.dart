@@ -14,35 +14,34 @@ class _ProductPricePageState extends State<ProductPricePage> {
   final _additionalCostsTextController = TextEditingController();
   final _feesTextController = TextEditingController();
   final _profitTextcontroller = TextEditingController();
-  final minWidht = 320.0, minHeight = 800.0;
   final _countFeedstock$ = ValueNotifier<int>(1);
   final List<Widget> _feedList = [];
-  final _controller = ProductController.instance;
+  final _productController = ProductController.instance;
 
   @override
   void initState() {
     super.initState();
     _countFeedstock$.addListener(() => setState(() {}));
     _additionalCostsTextController.addListener(() => setState(() {
-          _controller.updateAdditional(
-              _controller.toNumeric(_additionalCostsTextController.text));
+          _productController.updateAdditional(_productController
+              .toNumeric(_additionalCostsTextController.text));
         }));
     _profitTextcontroller.addListener(() => setState(() {
-          _controller
-              .updateProfit(_controller.toNumeric(_profitTextcontroller.text));
+          _productController.updateProfit(
+              _productController.toNumeric(_profitTextcontroller.text));
         }));
     _feesTextController.addListener(() => setState(() {
-          _controller
-              .updateFees(_controller.toNumeric(_feesTextController.text));
+          _productController.updateFees(
+              _productController.toNumeric(_feesTextController.text));
         }));
-    _controller.addListener(() => setState(() {}));
+    _productController.addListener(() => setState(() {}));
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_feedList.isEmpty) {
-      _feedList.add(feedsotckFields(_countFeedstock$.value));
-    }
+    _feedList.isEmpty
+        ? _feedList.add(feedsotckFields(_countFeedstock$.value))
+        : null;
     return Scaffold(
       backgroundColor: Colors.black87,
       appBar: AppBar(),
@@ -77,7 +76,20 @@ class _ProductPricePageState extends State<ProductPricePage> {
                                   style:
                                       Theme.of(context).textTheme.labelLarge),
                               IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) =>
+                                          UtilsWidgets().infoCard(context, '''
+Este calculo determina um valor estimado para a venda de determinado produto, baseando-se na proporção de
+cada materia prima utilizada, impostos e lucro desejado.
+
+Recomenda-se, ainda, o estudo do mercado - concorrência e clientes - para alcançar um valor satisfatorio e 
+competitivo para seu produto. Utilize essa ferramenta para realizar projeções de ajustes, visando o valor 
+ideal.
+ '''),
+                                    );
+                                  },
                                   icon: Icon(
                                     Icons.help_outline_outlined,
                                     color: Theme.of(context)
@@ -130,42 +142,40 @@ class _ProductPricePageState extends State<ProductPricePage> {
   }
 
   Widget resultFutureField() {
-    return Flexible(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'R\$',
-                style: TextStyle(
-                  fontSize: 36,
-                  color: Theme.of(context).colorScheme.inversePrimary,
-                  letterSpacing: 2,
-                ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'R\$',
+              style: TextStyle(
+                fontSize: 36,
+                color: Theme.of(context).colorScheme.inversePrimary,
+                letterSpacing: 2,
               ),
-              Text(
-                ' ${_controller.value}',
-                style: TextStyle(
-                  fontSize: 36,
-                  color: Theme.of(context).colorScheme.tertiary,
-                  letterSpacing: 2,
-                ),
-              ),
-            ],
-          ),
-          globals.verySmallBoxSpace,
-          SizedBox(
-            width: MediaQuery.of(context).size.width * .5,
-            child: Divider(
-              color: Theme.of(context).colorScheme.tertiary,
             ),
+            Text(
+              ' ${_productController.value}',
+              style: TextStyle(
+                fontSize: 36,
+                color: Theme.of(context).colorScheme.tertiary,
+                letterSpacing: 2,
+              ),
+            ),
+          ],
+        ),
+        globals.verySmallBoxSpace,
+        SizedBox(
+          width: MediaQuery.of(context).size.width * .5,
+          child: Divider(
+            color: Theme.of(context).colorScheme.tertiary,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -181,7 +191,8 @@ class _ProductPricePageState extends State<ProductPricePage> {
             IconButton(
                 onPressed: () {
                   if (_countFeedstock$.value > 1) {
-                    _controller.removeFeedstock(_countFeedstock$.value - 1);
+                    _productController
+                        .removeFeedstock(_countFeedstock$.value - 1);
                     _countFeedstock$.value--;
                     _feedList.removeLast();
                   }
@@ -223,9 +234,9 @@ class _ProductPricePageState extends State<ProductPricePage> {
     final valueTextController = TextEditingController();
     final amountTextController = TextEditingController();
     amountTextController.addListener(() => setState(() {
-          _controller.addFeedstock(
-              _controller.toNumeric(valueTextController.text),
-              _controller.toNumeric(amountTextController.text),
+          _productController.addFeedstock(
+              _productController.toNumeric(valueTextController.text),
+              _productController.toNumeric(amountTextController.text),
               index);
         }));
     return Row(
@@ -324,13 +335,13 @@ class _ProductPricePageState extends State<ProductPricePage> {
       padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 32),
       elevation: 1,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      splashColor: Theme.of(context).colorScheme.inversePrimary,
+      splashColor: Theme.of(context).colorScheme.secondary,
       onPressed: () {
         _additionalCostsTextController.clear();
         _feesTextController.clear();
         _profitTextcontroller.clear();
         do {
-          _controller.removeFeedstock(_countFeedstock$.value);
+          _productController.removeFeedstock(_countFeedstock$.value);
           _countFeedstock$.value--;
           _feedList.removeLast();
         } while (_countFeedstock$.value != 0);
@@ -340,21 +351,6 @@ class _ProductPricePageState extends State<ProductPricePage> {
         'Limpar',
         style: Theme.of(context).textTheme.bodyLarge,
       ),
-    );
-  }
-
-  Widget shareButton() {
-    return MaterialButton(
-      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 32),
-      elevation: 1,
-      color: Theme.of(context).colorScheme.tertiary,
-      splashColor: Theme.of(context).colorScheme.inversePrimary,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      child: Text(
-        'Compartilhar',
-        style: Theme.of(context).textTheme.bodyLarge,
-      ),
-      onPressed: () {},
     );
   }
 }

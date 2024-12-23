@@ -10,10 +10,10 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     log(MediaQuery.of(context).size.toString());
     return Scaffold(
-      body: Container(
+      backgroundColor: Colors.black87,
+      body: SizedBox(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        color: Colors.black87,
         child: const Calculator(),
       ),
     );

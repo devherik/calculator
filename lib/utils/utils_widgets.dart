@@ -109,11 +109,11 @@ class UtilsWidgets {
           thickness: 0.5,
         )
       ])),
-      titleTextStyle: Theme.of(context).textTheme.titleMedium,
+      titleTextStyle: Theme.of(context).textTheme.titleSmall,
       content: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
             info,
-            style: Theme.of(context).textTheme.labelMedium,
+            style: Theme.of(context).textTheme.labelLarge,
           )));
 }

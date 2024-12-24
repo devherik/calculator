@@ -59,7 +59,7 @@ class _CalculatorState extends State<Calculator>
       symbolButton('+'),
       numberButton(0),
       symbolButton('.'),
-      const SizedBox(),
+      removeLastButton(),
       symbolButton('='),
     ];
     return Column(
@@ -206,7 +206,21 @@ class _CalculatorState extends State<Calculator>
                   fontWeight: FontWeight.bold,
                   fontSize: 24),
             ),
-            onLongPress: () => _expressionController.clearAll(),
+            onPressed: () {
+              _expressionController.clearAll();
+            });
+      },
+    );
+  }
+
+  Widget removeLastButton() {
+    return Builder(
+      builder: (context) {
+        return MaterialButton(
+            shape: const CircleBorder(eccentricity: 0),
+            elevation: 0,
+            color: Theme.of(context).colorScheme.primary,
+            child: const Icon(Iconsax.back_square4),
             onPressed: () {
               _expressionController.value.isNotEmpty
                   ? _expressionController.value = _expressionController.value

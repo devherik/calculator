@@ -29,13 +29,13 @@ class ExpressionController extends ValueNotifier<String> {
   }
 
   void setResult() {
-    value = result.value;
-    result.value = '';
     try {
-      localstorage.saveAnExpression('$value = $result');
+      localstorage.saveAnExpression('$value = ${result.value}');
     } on Exception catch (e) {
       throw Exception(e.toString());
     }
+    value = result.value;
+    result.value = '';
   }
 
   void clearExpression() => value = '';

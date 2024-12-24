@@ -21,7 +21,7 @@ class AppRouter {
         routes: <RouteBase>[
           GoRoute(
             path: 'history',
-            name: 'hitory',
+            name: 'history',
             pageBuilder: (context, state) => CustomTransitionPage<void>(
               child: const HistoryPage(),
               transitionsBuilder:

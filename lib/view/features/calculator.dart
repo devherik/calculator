@@ -1,5 +1,5 @@
 import 'package:go_router/go_router.dart';
-import 'package:calculator/presentation/controllers/expression_controller.dart';
+import 'package:calculator/view/controllers/expression_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:calculator/utils/globals.dart' as global;

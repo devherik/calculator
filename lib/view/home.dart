@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:calculator/presentation/features/calculator.dart';
+import 'package:calculator/view/features/calculator.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {

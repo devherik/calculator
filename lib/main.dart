@@ -1,6 +1,6 @@
 import 'package:calculator/config/router/router.dart';
 import 'package:calculator/config/theme/theme.dart';
-import 'package:calculator/presentation/controllers/main_controller.dart';
+import 'package:calculator/view/controllers/main_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

@@ -1,6 +1,6 @@
-import 'package:calculator/presentation/features/history.dart';
-import 'package:calculator/presentation/features/product_price.dart';
-import 'package:calculator/presentation/home.dart';
+import 'package:calculator/view/features/history.dart';
+import 'package:calculator/view/features/product_price.dart';
+import 'package:calculator/view/home.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

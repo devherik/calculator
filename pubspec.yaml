@@ -43,6 +43,8 @@ dependencies:
   shared_preferences: ^2.2.3
   function_tree: ^0.9.1
   localstorage: ^5.0.0
+  hive_flutter: ^1.1.0
+  path_provider: ^2.1.5
 
 dev_dependencies:
   flutter_test:

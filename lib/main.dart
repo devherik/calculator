@@ -1,15 +1,16 @@
 import 'package:calculator/config/router/router.dart';
 import 'package:calculator/config/theme/theme.dart';
-import 'package:calculator/view/controllers/main_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:path_provider/path_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  final MainController mainController = MainController.instance;
-  await mainController.init();
+  final dir = await getApplicationDocumentsDirectory();
+  Hive.init(dir.path);
   runApp(const MyApp());
 }
 

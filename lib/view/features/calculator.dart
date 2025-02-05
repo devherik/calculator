@@ -1,5 +1,5 @@
+import 'package:calculator/viewmodel/expression_viewmodel.dart';
 import 'package:go_router/go_router.dart';
-import 'package:calculator/view/controllers/expression_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:calculator/utils/globals.dart' as global;
@@ -15,7 +15,7 @@ class Calculator extends StatefulWidget {
 
 class _CalculatorState extends State<Calculator>
     with SingleTickerProviderStateMixin {
-  late ExpressionController _expressionController;
+  late ExpressionViewmodel _expressionViewmodel;
   late AnimationController _animationController;
 
   late Animation<double> pressController;
@@ -23,7 +23,8 @@ class _CalculatorState extends State<Calculator>
   @override
   void initState() {
     super.initState();
-    _expressionController = ExpressionController.instance;
+    _expressionViewmodel = ExpressionViewmodel.instance;
+    _expressionViewmodel.init();
 
     _animationController =
         AnimationController(vsync: this, duration: const Duration(seconds: 1))
@@ -31,9 +32,9 @@ class _CalculatorState extends State<Calculator>
     pressController = CurvedAnimation(
         parent: _animationController, curve: Curves.bounceInOut);
 
-    _expressionController.addListener(() => setState(() {
-          _expressionController.value.length < 18
-              ? _expressionController.updatePartialResult()
+    _expressionViewmodel.addListener(() => setState(() {
+          _expressionViewmodel.value.length < 18
+              ? _expressionViewmodel.updatePartialResult()
               : null;
         }));
   }
@@ -109,13 +110,13 @@ class _CalculatorState extends State<Calculator>
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           //TODO: add transitions animations
-          Text(_expressionController.value,
+          Text(_expressionViewmodel.value,
               style: GoogleFonts.ubuntu(
                   fontSize: 24,
                   letterSpacing: 1.5,
                   color: global.primaryLightColor)),
           ValueListenableBuilder(
-            valueListenable: _expressionController.result,
+            valueListenable: _expressionViewmodel.total,
             builder: (context, value, child) => Text(value,
                 style: GoogleFonts.ubuntu(
                     fontSize: 48,
@@ -144,8 +145,8 @@ class _CalculatorState extends State<Calculator>
                       fontWeight: FontWeight.bold,
                       fontSize: 24),
                 )),
-            onPressed: () => _expressionController.value.length < 18
-                ? _expressionController.value += number.toString()
+            onPressed: () => _expressionViewmodel.value.length < 18
+                ? _expressionViewmodel.value += number.toString()
                 : null);
       },
     );
@@ -185,8 +186,8 @@ class _CalculatorState extends State<Calculator>
                 default:
               }
               symbol == '='
-                  ? _expressionController.setResult()
-                  : _expressionController.value += symbol;
+                  ? _expressionViewmodel.persistResult()
+                  : _expressionViewmodel.value += symbol;
             });
       },
     );
@@ -207,7 +208,7 @@ class _CalculatorState extends State<Calculator>
                   fontSize: 24),
             ),
             onPressed: () {
-              _expressionController.clearAll();
+              _expressionViewmodel.clearAll();
             });
       },
     );
@@ -222,9 +223,9 @@ class _CalculatorState extends State<Calculator>
             color: Theme.of(context).colorScheme.primary,
             child: const Icon(Iconsax.back_square4),
             onPressed: () {
-              _expressionController.value.isNotEmpty
-                  ? _expressionController.value = _expressionController.value
-                      .substring(0, _expressionController.value.length - 1)
+              _expressionViewmodel.value.isNotEmpty
+                  ? _expressionViewmodel.value = _expressionViewmodel.value
+                      .substring(0, _expressionViewmodel.value.length - 1)
                   : null;
             });
       },

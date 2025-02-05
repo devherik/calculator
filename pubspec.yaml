@@ -40,7 +40,6 @@ dependencies:
   hexcolor: ^3.0.1
   line_awesome_flutter: ^3.0.1
   iconsax: ^0.0.8
-  shared_preferences: ^2.2.3
   function_tree: ^0.9.1
   localstorage: ^5.0.0
   hive_flutter: ^1.1.0

@@ -16,7 +16,6 @@ class _ProductPricePageState extends State<ProductPricePage> {
   final _profitTextcontroller = TextEditingController();
   final _countFeedstock$ = ValueNotifier<int>(1);
   final List<Widget> _feedList = [];
-  final _productController = ProductController.instance;
 
   @override
   void initState() {

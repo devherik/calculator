@@ -4,6 +4,7 @@ import 'package:calculator/model/expression_entity.dart';
 import 'package:calculator/repositories_services/localstorage_repository.dart';
 import 'package:calculator/repositories_services/localstorage_repository_imp.dart';
 import 'package:flutter/material.dart';
+import 'package:function_tree/function_tree.dart';
 import 'package:result_dart/result_dart.dart';
 
 class ExpressionViewmodel extends ValueNotifier<String> {
@@ -29,6 +30,7 @@ class ExpressionViewmodel extends ValueNotifier<String> {
 
   Result<bool> calculate() {
     try {
+      total.value = value.interpret().toStringAsFixed(0);
       return const Success(true);
     } on Exception {
       return Failure(Exception());

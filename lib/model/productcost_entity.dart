@@ -14,11 +14,24 @@ class ProductcostEntity {
           fees: json['fees'],
           feedstockList: json['feedstockList']);
 
-  final double feedstock;
-  final double profit;
-  final double additional;
-  final double fees;
-  final List<double> feedstockList;
+  double feedstock;
+  double profit;
+  double additional;
+  double fees;
+  List<double> feedstockList;
+  double total = 0.0;
+
+  void calculateTotal() {
+    double result;
+    if (profit > 0.0 && fees > 0.0) {
+      result = (((additional + feedstock) * fees) * profit);
+    } else if (profit > 0.0) {
+      result = ((additional + feedstock) * profit);
+    } else {
+      result = (additional + feedstock);
+    }
+    total = result.roundToDouble();
+  }
 
   Map<String, dynamic> toJson() => {
         'feedstock': feedstock,

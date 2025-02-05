@@ -6,15 +6,17 @@ import 'package:calculator/repositories_services/localstorage_repository_imp.dar
 import 'package:flutter/material.dart';
 import 'package:result_dart/result_dart.dart';
 
-class ProductViewmodel extends ValueNotifier<double> {
+class ProductViewmodel extends ValueNotifier<ProductcostEntity> {
   ProductViewmodel._(super._value);
-  static final instance = ProductViewmodel._(0.0);
+  static final instance = ProductViewmodel._(ProductcostEntity(
+      feedstock: 0.0,
+      profit: 0.0,
+      additional: 0.0,
+      fees: 0.0,
+      feedstockList: <double>[]));
 
   final LocalstorageRepository _localstorage =
       LocalstorageRepositoryImp.instance;
-
-  double _feedstockTotal = 0.0, _profit = 0.0, _additional = 0.0, _fees = 0.0;
-  final _feedstockList = <double>[0, 0, 0, 0, 0, 0];
 
   bool status = false;
 
@@ -31,15 +33,7 @@ class ProductViewmodel extends ValueNotifier<double> {
 
   Result<bool> updateValue() {
     try {
-      double result;
-      if (_profit > 0.0 && _fees > 0.0) {
-        result = (((_additional + _feedstockTotal) * _fees) * _profit);
-      } else if (_profit > 0.0) {
-        result = ((_additional + _feedstockTotal) * _profit);
-      } else {
-        result = (_additional + _feedstockTotal);
-      }
-      value = result.roundToDouble();
+      value.calculateTotal();
       return const Success(true);
     } on Exception {
       return Failure(Exception());
@@ -48,48 +42,50 @@ class ProductViewmodel extends ValueNotifier<double> {
 
   void persistResult() {
     final cost = ProductcostEntity(
-        feedstock: _feedstockTotal,
-        profit: _profit,
-        additional: _additional,
-        fees: _fees,
-        feedstockList: _feedstockList);
+        feedstock: value.feedstock,
+        profit: value.profit,
+        additional: value.additional,
+        fees: value.fees,
+        feedstockList: value.feedstockList);
     _localstorage.persist('product', cost.toJson()).onSuccess((success) {
       updateHistory();
     }).onFailure((failure) => log(failure.toString()));
   }
 
   void updateFees(double fees) {
-    _fees = (fees / 100) + 1;
+    value.fees = (fees / 100) + 1;
     updateValue().onFailure((failure) => log(failure.toString()));
   }
 
   void updateProfit(double profit) {
-    _profit = (profit / 100) + 1;
+    value.profit = (profit / 100) + 1;
     updateValue().onFailure((failure) => log(failure.toString()));
   }
 
   void updateAdditional(double additional) {
-    _additional = additional;
+    value.additional = additional;
     updateValue().onFailure((failure) => log(failure.toString()));
   }
 
   void updateFeedStockTotal() {
-    value = 0.0;
-    _feedstockTotal = 0.0;
-    for (var feed in _feedstockList) {
-      _feedstockTotal += feed;
+    value.total = 0.0;
+    value.feedstock = 0.0;
+    for (var feed in value.feedstockList) {
+      value.feedstock += feed;
     }
     updateValue().onFailure((failure) => log(failure.toString()));
   }
 
   void addFeedStock(double cost, double amount, int index) {
     final total = cost * amount;
-    _feedstockList[index] != total ? _feedstockList[index] = total : null;
+    value.feedstockList[index] != total
+        ? value.feedstockList[index] = total
+        : null;
     updateFeedStockTotal();
   }
 
   void removeFeedstock(int index) {
-    _feedstockList[index] = 0.0;
+    value.feedstockList[index] = 0.0;
     updateFeedStockTotal();
   }
 
@@ -106,5 +102,13 @@ class ProductViewmodel extends ValueNotifier<double> {
         .clearBox('product')
         .onSuccess((success) => history.value = <ProductcostEntity>[])
         .onFailure((failure) => log(failure.toString()));
+  }
+
+  double toNumeric(String char) {
+    if (double.tryParse(char) != null) {
+      return double.parse(char);
+    } else {
+      return 0;
+    }
   }
 }

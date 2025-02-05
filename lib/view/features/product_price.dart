@@ -1,5 +1,5 @@
-import 'package:calculator/view/controllers/product_controller.dart';
 import 'package:calculator/utils/utils_widgets.dart';
+import 'package:calculator/viewmodel/product_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:calculator/utils/globals.dart' as globals;
 
@@ -11,29 +11,34 @@ class ProductPricePage extends StatefulWidget {
 }
 
 class _ProductPricePageState extends State<ProductPricePage> {
+  late ProductViewmodel _productViewmodel;
+
   final _additionalCostsTextController = TextEditingController();
   final _feesTextController = TextEditingController();
   final _profitTextcontroller = TextEditingController();
   final _countFeedstock$ = ValueNotifier<int>(1);
-  final List<Widget> _feedList = [];
+  final _feedList = <Widget>[];
 
   @override
   void initState() {
     super.initState();
+    _productViewmodel = ProductViewmodel.instance;
+    _productViewmodel.init();
+
     _countFeedstock$.addListener(() => setState(() {}));
     _additionalCostsTextController.addListener(() => setState(() {
-          _productController.updateAdditional(_productController
-              .toNumeric(_additionalCostsTextController.text));
+          _productViewmodel.updateAdditional(
+              _productViewmodel.toNumeric(_additionalCostsTextController.text));
         }));
     _profitTextcontroller.addListener(() => setState(() {
-          _productController.updateProfit(
-              _productController.toNumeric(_profitTextcontroller.text));
+          _productViewmodel.updateProfit(
+              _productViewmodel.toNumeric(_profitTextcontroller.text));
         }));
     _feesTextController.addListener(() => setState(() {
-          _productController.updateFees(
-              _productController.toNumeric(_feesTextController.text));
+          _productViewmodel.updateFees(
+              _productViewmodel.toNumeric(_feesTextController.text));
         }));
-    _productController.addListener(() => setState(() {}));
+    _productViewmodel.addListener(() => setState(() {}));
   }
 
   @override
@@ -158,7 +163,7 @@ ideal.
               ),
             ),
             Text(
-              ' ${_productController.value}',
+              ' ${_productViewmodel.value.total}',
               style: TextStyle(
                 fontSize: 36,
                 color: Theme.of(context).colorScheme.tertiary,
@@ -190,7 +195,7 @@ ideal.
             IconButton(
                 onPressed: () {
                   if (_countFeedstock$.value > 1) {
-                    _productController
+                    _productViewmodel
                         .removeFeedstock(_countFeedstock$.value - 1);
                     _countFeedstock$.value--;
                     _feedList.removeLast();
@@ -233,9 +238,9 @@ ideal.
     final valueTextController = TextEditingController();
     final amountTextController = TextEditingController();
     amountTextController.addListener(() => setState(() {
-          _productController.addFeedstock(
-              _productController.toNumeric(valueTextController.text),
-              _productController.toNumeric(amountTextController.text),
+          _productViewmodel.addFeedStock(
+              _productViewmodel.toNumeric(valueTextController.text),
+              _productViewmodel.toNumeric(amountTextController.text),
               index);
         }));
     return Row(
@@ -340,7 +345,7 @@ ideal.
         _feesTextController.clear();
         _profitTextcontroller.clear();
         do {
-          _productController.removeFeedstock(_countFeedstock$.value);
+          _productViewmodel.removeFeedstock(_countFeedstock$.value);
           _countFeedstock$.value--;
           _feedList.removeLast();
         } while (_countFeedstock$.value != 0);

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:calculator/model/expression_entity.dart';
 import 'package:calculator/repositories_services/localstorage_repository.dart';
 import 'package:calculator/repositories_services/localstorage_repository_imp.dart';
+import 'package:calculator/utils/utils_math.dart';
 import 'package:flutter/material.dart';
 import 'package:function_tree/function_tree.dart';
 import 'package:result_dart/result_dart.dart';
@@ -12,15 +13,15 @@ class ExpressionViewmodel extends ValueNotifier<String> {
   static final instance = ExpressionViewmodel._('');
 
   final total = ValueNotifier<String>('');
-  final LocalstorageRepository _localstorage =
-      LocalstorageRepositoryImp.instance;
+  final LocalstorageRepository _localstorage = LocalstorageRepositoryImp();
 
   bool status = false;
 
   final history = ValueNotifier<List<ExpressionEntity>>(<ExpressionEntity>[]);
 
-  void init() {
+  Future<void> init() async {
     if (!status) {
+      await _localstorage.init('calculator');
       updateHistory();
       status = true;
     }
@@ -30,7 +31,10 @@ class ExpressionViewmodel extends ValueNotifier<String> {
 
   Result<bool> calculate() {
     try {
-      total.value = value.interpret().toStringAsFixed(0);
+      UtilsMath().isNumeric(value[value.length - 1]) ||
+              value[value.length - 1] == ')'
+          ? total.value = value.interpret().toStringAsFixed(1)
+          : null;
       return const Success(true);
     } on Exception {
       return Failure(Exception());
@@ -41,7 +45,7 @@ class ExpressionViewmodel extends ValueNotifier<String> {
       calculate().onFailure((failure) => log(failure.toString()));
 
   void updateHistory() {
-    _localstorage.getCollection('calculator').onSuccess((success) {
+    _localstorage.getCollection().onSuccess((success) {
       for (var element in success) {
         history.value.add(ExpressionEntity.fromJson(element));
       }
@@ -50,7 +54,7 @@ class ExpressionViewmodel extends ValueNotifier<String> {
 
   void persistResult() {
     final calc = ExpressionEntity(sentence: value, result: total.value);
-    _localstorage.persist('calculator', calc.toJson()).onSuccess((success) {
+    _localstorage.persist(calc.toJson()).onSuccess((success) {
       updateHistory();
       value = total.value;
       total.value = '';
@@ -61,7 +65,7 @@ class ExpressionViewmodel extends ValueNotifier<String> {
 
   void clearHistory() {
     _localstorage
-        .clearBox('calculator')
+        .clearBox()
         .onSuccess((success) => history.value = <ExpressionEntity>[])
         .onFailure((failure) => log(failure.toString()));
   }

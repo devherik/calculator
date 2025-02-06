@@ -1,8 +1,9 @@
 import 'package:result_dart/result_dart.dart';
 
 abstract class LocalstorageRepository {
-  Result<bool> persist(String box, Map<String, dynamic> data);
-  Result<List<Map<String, dynamic>>> getCollection(String box);
-  Result<bool> delete(String box, String key);
-  Result<bool> clearBox(String box);
+  Future<Result<bool>> init(String boxName);
+  Future<Result<bool>> persist(Map<String, dynamic> data);
+  Future<Result<List<Map<String, dynamic>>>> getCollection();
+  Future<Result<bool>> delete(String key);
+  Future<Result<bool>> clearBox();
 }

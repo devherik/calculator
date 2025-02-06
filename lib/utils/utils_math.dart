@@ -1,6 +1,5 @@
 class UtilsMath {
-  UtilsMath._();
-  static final instance = UtilsMath._();
+  UtilsMath();
 
   bool isNumeric(String char) => double.tryParse(char) != null;
 

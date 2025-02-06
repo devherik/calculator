@@ -15,15 +15,15 @@ class ProductViewmodel extends ValueNotifier<ProductcostEntity> {
       fees: 0.0,
       feedstockList: <double>[]));
 
-  final LocalstorageRepository _localstorage =
-      LocalstorageRepositoryImp.instance;
+  final LocalstorageRepository _localstorage = LocalstorageRepositoryImp();
 
   bool status = false;
 
   final history = ValueNotifier<List<ProductcostEntity>>(<ProductcostEntity>[]);
 
-  void init() {
+  Future<void> init() async {
     if (!status) {
+      await _localstorage.init('product');
       updateHistory();
       status = true;
     }
@@ -47,7 +47,7 @@ class ProductViewmodel extends ValueNotifier<ProductcostEntity> {
         additional: value.additional,
         fees: value.fees,
         feedstockList: value.feedstockList);
-    _localstorage.persist('product', cost.toJson()).onSuccess((success) {
+    _localstorage.persist(cost.toJson()).onSuccess((success) {
       updateHistory();
     }).onFailure((failure) => log(failure.toString()));
   }
@@ -90,7 +90,7 @@ class ProductViewmodel extends ValueNotifier<ProductcostEntity> {
   }
 
   void updateHistory() {
-    _localstorage.getCollection('product').onSuccess((success) {
+    _localstorage.getCollection().onSuccess((success) {
       for (var element in success) {
         history.value.add(ProductcostEntity.fromJson(element));
       }
@@ -99,7 +99,7 @@ class ProductViewmodel extends ValueNotifier<ProductcostEntity> {
 
   void clearHistory() {
     _localstorage
-        .clearBox('product')
+        .clearBox()
         .onSuccess((success) => history.value = <ProductcostEntity>[])
         .onFailure((failure) => log(failure.toString()));
   }

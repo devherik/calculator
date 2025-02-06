@@ -1,31 +1,55 @@
 import 'package:calculator/repositories_services/localstorage_repository.dart';
-import 'package:result_dart/src/types.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:result_dart/result_dart.dart';
 
 class LocalstorageRepositoryImp implements LocalstorageRepository {
-  const LocalstorageRepositoryImp._();
-  static const instance = LocalstorageRepositoryImp._();
+  LocalstorageRepositoryImp();
+
+  late Box box;
 
   @override
-  Result<bool> clearBox(String box) {
-    // TODO: implement clearBox
-    throw UnimplementedError();
+  Future<Result<bool>> init(String boxName) async {
+    try {
+      box = await Hive.openBox(boxName);
+      return Success(box.isOpen);
+    } on Exception {
+      return Failure(Exception('Unable to open a box'));
+    }
   }
 
   @override
-  Result<bool> delete(String box, String key) {
+  Future<Result<bool>> clearBox() async {
+    try {
+      box.clear();
+      return const Success(true);
+    } on Exception {
+      return Failure(Exception('Box was not wiped'));
+    }
+  }
+
+  @override
+  Future<Result<bool>> delete(String key) {
     // TODO: implement delete
     throw UnimplementedError();
   }
 
   @override
-  Result<List<Map<String, dynamic>>> getCollection(String box) {
-    // TODO: implement getCollection
-    throw UnimplementedError();
+  Future<Result<List<Map<String, dynamic>>>> getCollection() async {
+    try {
+      final data = box.values;
+      return const Success(<Map<String, dynamic>>[]);
+    } on Exception {
+      return Failure(Exception('Box was not wiped'));
+    }
   }
 
   @override
-  Result<bool> persist(String box, Map<String, dynamic> data) {
-    // TODO: implement persist
-    throw UnimplementedError();
+  Future<Result<bool>> persist(Map<String, dynamic> data) async {
+    try {
+      box.add(data);
+      return const Success(true);
+    } on Exception {
+      return Failure(Exception('Data not saved'));
+    }
   }
 }

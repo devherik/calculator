@@ -31,8 +31,9 @@ class ExpressionViewmodel extends ValueNotifier<String> {
 
   Result<bool> calculate() {
     try {
-      UtilsMath().isNumeric(value[value.length - 1]) ||
-              value[value.length - 1] == ')'
+      value.isNotEmpty &&
+              (UtilsMath().isNumeric(value[value.length - 1]) ||
+                  value[value.length - 1] == ')')
           ? total.value = value.interpret().toStringAsFixed(1)
           : null;
       return const Success(true);
@@ -46,6 +47,7 @@ class ExpressionViewmodel extends ValueNotifier<String> {
 
   void updateHistory() {
     _localstorage.getCollection().onSuccess((success) {
+      history.value.clear();
       for (var element in success) {
         history.value.add(ExpressionEntity.fromJson(element));
       }
@@ -53,12 +55,14 @@ class ExpressionViewmodel extends ValueNotifier<String> {
   }
 
   void persistResult() {
-    final calc = ExpressionEntity(sentence: value, result: total.value);
-    _localstorage.persist(calc.toJson()).onSuccess((success) {
-      updateHistory();
-      value = total.value;
-      total.value = '';
-    }).onFailure((failure) => log(failure.toString()));
+    if (value.isNotEmpty && total.value.isNotEmpty) {
+      final calc = ExpressionEntity(sentence: value, result: total.value);
+      _localstorage.persist(calc.toJson()).onSuccess((success) {
+        updateHistory();
+        value = total.value;
+        total.value = '';
+      }).onFailure((failure) => log(failure.toString()));
+    }
   }
 
   void clearExpression() => value = '';

@@ -72,7 +72,7 @@ class _CalculatorState extends State<Calculator>
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
-              iconButton(const Icon(Iconsax.timer), '/home/history'),
+              historyButton(),
               iconButton(const Icon(Iconsax.coin), '/home/product')
             ],
           ),
@@ -236,6 +236,15 @@ class _CalculatorState extends State<Calculator>
     return Builder(
       builder: (context) =>
           IconButton(onPressed: () => context.go(route), icon: icon),
+    );
+  }
+
+  Widget historyButton() {
+    return Builder(
+      builder: (context) => IconButton(
+          onPressed: () => context.go('/home/history',
+              extra: {'expressionViewmodel': _expressionViewmodel}),
+          icon: const Icon(Iconsax.timer)),
     );
   }
 

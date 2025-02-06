@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:calculator/repositories_services/localstorage_repository.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:result_dart/result_dart.dart';

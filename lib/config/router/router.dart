@@ -22,15 +22,11 @@ class AppRouter {
           GoRoute(
             path: 'history',
             name: 'history',
-            pageBuilder: (context, state) => CustomTransitionPage<void>(
-              child: const HistoryPage(),
-              transitionsBuilder:
-                  (context, animation, secondaryAnimation, child) =>
-                      FadeTransition(
-                opacity: animation,
-                child: child,
-              ),
-            ),
+            builder: (context, state) {
+              Map<String, dynamic> map = state.extra! as Map<String, dynamic>;
+              return HistoryPage(
+                  expressionViewmodel: map['expressionViewmodel']);
+            },
           ),
           GoRoute(
             path: 'product',

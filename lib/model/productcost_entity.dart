@@ -6,7 +6,7 @@ class ProductcostEntity {
       required this.fees,
       required this.feedstockList});
 
-  factory ProductcostEntity.fromJson(Map<String, dynamic> json) =>
+  factory ProductcostEntity.fromJson(Map<dynamic, dynamic> json) =>
       ProductcostEntity(
           feedstock: json['feedstock'],
           profit: json['profit'],
@@ -33,7 +33,7 @@ class ProductcostEntity {
     total = result.roundToDouble();
   }
 
-  Map<String, dynamic> toJson() => {
+  Map<dynamic, dynamic> toJson() => {
         'feedstock': feedstock,
         'profit': profit,
         'additional': additional,

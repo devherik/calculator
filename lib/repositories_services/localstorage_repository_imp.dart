@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:calculator/repositories_services/localstorage_repository.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:result_dart/result_dart.dart';
@@ -34,17 +36,21 @@ class LocalstorageRepositoryImp implements LocalstorageRepository {
   }
 
   @override
-  Future<Result<List<Map<String, dynamic>>>> getCollection() async {
+  Future<Result<List<Map<dynamic, dynamic>>>> getCollection() async {
     try {
       final data = box.values;
-      return const Success(<Map<String, dynamic>>[]);
+      final list = <Map<dynamic, dynamic>>[];
+      for (var e in data) {
+        list.add(e);
+      }
+      return Success(list);
     } on Exception {
       return Failure(Exception('Box was not wiped'));
     }
   }
 
   @override
-  Future<Result<bool>> persist(Map<String, dynamic> data) async {
+  Future<Result<bool>> persist(Map<dynamic, dynamic> data) async {
     try {
       box.add(data);
       return const Success(true);

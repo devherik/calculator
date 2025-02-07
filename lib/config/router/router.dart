@@ -1,5 +1,5 @@
 import 'package:calculator/view/features/history.dart';
-import 'package:calculator/view/features/product_price.dart';
+import 'package:calculator/view/features/product_cost.dart';
 import 'package:calculator/view/home.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -42,5 +42,5 @@ class AppRouter {
             ),
           )
         ])
-  ], initialLocation: '/home/product');
+  ], initialLocation: '/home');
 }

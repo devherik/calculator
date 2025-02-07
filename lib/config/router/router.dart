@@ -32,7 +32,7 @@ class AppRouter {
             path: 'product',
             name: 'product price',
             pageBuilder: (context, state) => CustomTransitionPage<void>(
-              child: const ProductPricePage(),
+              child: const ProductCostPage(),
               transitionsBuilder:
                   (context, animation, secondaryAnimation, child) =>
                       FadeTransition(
@@ -42,5 +42,5 @@ class AppRouter {
             ),
           )
         ])
-  ], initialLocation: '/home');
+  ], initialLocation: '/home/product');
 }

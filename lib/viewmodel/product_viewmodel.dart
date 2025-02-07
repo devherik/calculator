@@ -13,7 +13,7 @@ class ProductViewmodel extends ValueNotifier<ProductcostEntity> {
       profit: 0.0,
       additional: 0.0,
       fees: 0.0,
-      feedstockList: <double>[]));
+      feedstockList: <double>[0, 0, 0, 0, 0, 0]));
 
   final LocalstorageRepository _localstorage = LocalstorageRepositoryImp();
 

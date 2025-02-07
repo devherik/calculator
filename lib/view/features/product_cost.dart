@@ -3,14 +3,14 @@ import 'package:calculator/viewmodel/product_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:calculator/utils/globals.dart' as globals;
 
-class ProductPricePage extends StatefulWidget {
-  const ProductPricePage({super.key});
+class ProductCostPage extends StatefulWidget {
+  const ProductCostPage({super.key});
 
   @override
-  State<ProductPricePage> createState() => _ProductPricePageState();
+  State<ProductCostPage> createState() => _ProductCostPageState();
 }
 
-class _ProductPricePageState extends State<ProductPricePage> {
+class _ProductCostPageState extends State<ProductCostPage> {
   late ProductViewmodel _productViewmodel;
 
   final _additionalCostsTextController = TextEditingController();

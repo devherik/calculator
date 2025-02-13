@@ -10,7 +10,7 @@ void main() async {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   final dir = await getApplicationDocumentsDirectory();
-  Hive.init(dir.path);
+  Hive.initFlutter(dir.path);
   runApp(const MyApp());
 }
 

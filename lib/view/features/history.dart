@@ -19,27 +19,25 @@ class HistoryPage extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: Flexible(
-          child: ValueListenableBuilder(
-              valueListenable: expressionViewmodel.history,
-              builder: (context, value, child) {
-                return ListView.builder(
-                  itemCount: value.length,
-                  itemBuilder: (context, index) => Column(
-                    children: [
-                      historyValue(value[index].toString(), context),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        child: Divider(
-                          thickness: 0.2,
-                          color: Theme.of(context).colorScheme.inversePrimary,
-                        ),
-                      )
-                    ],
-                  ),
-                );
-              }),
-        ),
+        child: ValueListenableBuilder(
+            valueListenable: expressionViewmodel.history,
+            builder: (context, value, child) {
+              return ListView.builder(
+                itemCount: value.length,
+                itemBuilder: (context, index) => Column(
+                  children: [
+                    historyValue(value[index].toString(), context),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: Divider(
+                        thickness: 0.2,
+                        color: Theme.of(context).colorScheme.inversePrimary,
+                      ),
+                    )
+                  ],
+                ),
+              );
+            }),
       ),
     );
   }

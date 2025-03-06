@@ -61,7 +61,7 @@ class _CalculatorState extends State<Calculator>
       numberButton(0),
       symbolButton('.'),
       removeLastButton(),
-      symbolButton('='),
+      calculateButton(),
     ];
     return Column(
       children: <Widget>[
@@ -188,6 +188,28 @@ class _CalculatorState extends State<Calculator>
               symbol == '='
                   ? _expressionViewmodel.persistResult()
                   : _expressionViewmodel.value += symbol;
+            });
+      },
+    );
+  }
+
+  Widget calculateButton() {
+    double elevation = 0.5;
+    return Builder(
+      builder: (context) {
+        return MaterialButton(
+            shape: const CircleBorder(eccentricity: 0),
+            color: global.green,
+            elevation: elevation,
+            child: const Text(
+              '=',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24),
+            ),
+            onPressed: () {
+              _expressionViewmodel.persistResult();
             });
       },
     );
